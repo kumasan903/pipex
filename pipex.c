@@ -6,63 +6,36 @@
 /*   By: skawanis <skawanis@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 20:31:54 by skawanis          #+#    #+#             */
-/*   Updated: 2023/07/29 17:40:08 by skawanis         ###   ########.fr       */
+/*   Updated: 2023/07/31 00:54:43 by skawanis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static char	**get_path(char**envp)
-{
-	size_t	i;
-	char	**path;
-
-	i = 0;
-	while (1)
-	{
-		if (envp[i] == NULL)
-			break ;
-		if (start_with(envp[i], "PATH="))
-			path = ft_split(envp[i] + 5, ':');
-		i++;
-	}
-	return (path);
-}
-
-static void execute_cmd(char *cmd, char **argv, char **envp)
+void	execute_cmd(const char *bin_path, char **argv, char **envp)
 {
 	pid_t		pid;
-	const char	**path = (const char **)get_path(envp);
-	char		*child_argv[] = {"ls", NULL};
-	size_t		i;
-	int			flag;
-	(void)argv;
+	const char	*child_argv[] = {argv[1], NULL};
 
-	errno = 0;
-	i = 0;
-	printf("cmd:%s\n", cmd);
-	while (path[i] && flag == 1)
+	if (!bin_path)
 	{
-		flag = 0;
-		pid = fork();
-		if (pid > 0)
-		{
-			wait(NULL);
-		//	printf("parent_prosess\n");
-		}
-		if (pid == 0)
-		{
-			if(execve(ft_strjoin(ft_strjoin(path[i], "/"),cmd), child_argv, envp))
-				flag = 1;
-//			if(execve("/bin/aa", child_argv, envp))
-//				perror("pipex");
-		}
-		i++;
+		perror("pipex");
+		return ;
 	}
-
+	errno = 0;
+	pid = fork();
+	if (pid > 0)
+	{
+		wait(NULL);
+	}
+	if (pid == 0)
+	{
+		if(execve(bin_path, (char **)child_argv, envp))
+			perror("pipex");
+	}
 }
 
-static void	check_arg_error(int argc, char **argv)
+void	check_arg_error(int argc, char **argv)
 {
 	(void)argv;
 	if (argc == 0)
@@ -72,17 +45,30 @@ static void	check_arg_error(int argc, char **argv)
 	}
 }
 
-char	**make_cmd_path_list(char **argv, char **envp)
+char	*search_bynary(const char **cmd_path_list)
 {
-	const char **path = get_path(envp);
-	const char **path_list = 
+	size_t	i;
+	int		ret;
+
+	i = 0;
+	while (cmd_path_list[i])
+	{
+		ret = access(cmd_path_list[i], X_OK);
+		if (ret == 0)
+		{
+			return ((char *)cmd_path_list[i]);
+		}
+		i++;
+	}
+	return (NULL);
 }
 
 int	main(int argc, char**argv, char**envp)
 {
-	const char **cmd_path_list = make_cmd_path_list(argv, envp);
+	const char	**cmd_path_list = (const char **)make_cmd_path_list(argv, envp);
+	const char	*bin_path = search_bynary(cmd_path_list);
 
 	check_arg_error(argc, argv);
-	execute_cmd(argv[1], argv, envp);
+	execute_cmd(bin_path, argv, envp);
 	return (0);
 }

@@ -1,5 +1,5 @@
 NAME		= pipex
-SRCS		= pipex.c lib.c
+SRCS		= pipex.c make_path_list.c lib.c
 OBJS		= $(SRCS:.c=.o)
 CC			= cc
 CFLAGS		= -Wall -Wextra -Werror
