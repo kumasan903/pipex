@@ -6,7 +6,7 @@
 /*   By: skawanis <skawanis@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 23:08:21 by skawanis          #+#    #+#             */
-/*   Updated: 2023/07/31 00:25:39 by skawanis         ###   ########.fr       */
+/*   Updated: 2023/07/31 21:30:28 by skawanis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,10 @@ static char	**add_cmd_name(const char **path_list, size_t path_len, char *cmd)
 	size_t	i;
 	char	**cmd_path_list;
 	char	*new_cmd;
+	char	*cmd_name;
 
-	new_cmd = ft_strjoin("/", cmd);
+	cmd_name = ft_strndup(cmd, ft_strclen_s(cmd, ' '));
+	new_cmd = ft_strjoin("/", cmd_name);
 	cmd_path_list = ft_calloc(sizeof(char *), path_len + 1);
 	i = 0;
 	while (path_list[i] != NULL)

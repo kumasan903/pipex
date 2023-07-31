@@ -6,7 +6,7 @@
 /*   By: skawanis <skawanis@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 20:32:03 by skawanis          #+#    #+#             */
-/*   Updated: 2023/07/27 20:32:04 by skawanis         ###   ########.fr       */
+/*   Updated: 2023/07/31 21:29:33 by skawanis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,17 @@ int	start_with(char *heystack, char *needle)
 			return (1);
 		i++;
 	}
+}
+
+char	*ft_strndup(const char *s1, size_t size)
+{
+	char	*dest;
+
+	dest = ft_calloc(sizeof(char), size + 1);
+	if (dest == NULL)
+		return (NULL);
+	ft_memcpy(dest, s1, size);
+	return (dest);
 }
 
 //int main(void)

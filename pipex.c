@@ -6,7 +6,7 @@
 /*   By: skawanis <skawanis@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 20:31:54 by skawanis          #+#    #+#             */
-/*   Updated: 2023/07/31 00:54:43 by skawanis         ###   ########.fr       */
+/*   Updated: 2023/07/31 21:23:12 by skawanis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	execute_cmd(const char *bin_path, char **argv, char **envp)
 {
 	pid_t		pid;
-	const char	*child_argv[] = {argv[1], NULL};
+	const char	**child_argv = (const char **)ft_split(argv[1], ' ');
 
 	if (!bin_path)
 	{
