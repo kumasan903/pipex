@@ -6,7 +6,7 @@
 /*   By: skawanis <skawanis@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 23:08:21 by skawanis          #+#    #+#             */
-/*   Updated: 2023/07/31 21:30:28 by skawanis         ###   ########.fr       */
+/*   Updated: 2023/08/01 18:39:15 by skawanis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ char	**make_cmd_path_list(char **argv, char **envp)
 {
 	size_t		path_len;
 	const char	**path = (const char **)get_path(envp, &path_len);
-	const char	**cmd_path_list = (const char **)add_cmd_name(path, path_len, argv[1]);
-	(void)argv;
+	const char	**cmd_path_list = (const char **)add_cmd_name(path, path_len, argv[2]);
 	return ((char **)cmd_path_list);
 }
